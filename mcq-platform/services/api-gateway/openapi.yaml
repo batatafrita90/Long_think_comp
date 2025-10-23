@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: API Gateway
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+  /.well-known/info:
+    get:
+      summary: Service metadata
+      responses:
+        '200':
+          description: Metadata document
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Metrics payload
+  /api/v1/upload:
+    post:
+      summary: Upload PDF and create session
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '202':
+          description: Upload accepted and ingestion started
+  /api/v1/sessions/start:
+    post:
+      summary: Start a quiz session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_id:
+                  type: string
+              required:
+                - session_id
+      responses:
+        '200':
+          description: Session started
+  /api/v1/sessions/{execution}/answer:
+    post:
+      summary: Submit answer through gateway
+      parameters:
+        - name: execution
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: string
+                option:
+                  type: string
+              required:
+                - item_id
+                - option
+      responses:
+        '200':
+          description: Answer processed
+  /api/v1/sessions/{execution}/results:
+    get:
+      summary: Fetch session results snapshot
+      parameters:
+        - name: execution
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session results

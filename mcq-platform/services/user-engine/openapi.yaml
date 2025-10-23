@@ -1,0 +1,57 @@
+openapi: 3.0.3
+info:
+  title: User Engine
+  version: 0.1.0
+servers:
+  - url: http://localhost:8002
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+  /.well-known/info:
+    get:
+      summary: Service metadata
+      responses:
+        '200':
+          description: Metadata document
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Metrics payload
+  /api/v1/auth/token:
+    post:
+      summary: Issue session token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Token issued
+  /api/v1/users/{user_id}:
+    get:
+      summary: Retrieve user profile snapshot
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile payload

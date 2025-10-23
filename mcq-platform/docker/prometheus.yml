@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+  - job_name: 'mcq-services'
+    static_configs:
+      - targets:
+          - 'api-gateway:8000'
+          - 'workflow-agentes:8081'
+          - 'quiz-session-service:8082'
+          - 'metrics-engine:8083'
+          - 'user-engine:8002'
+          - 'reviewer-proxy:8080'

@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Quiz Session Service
+  version: 0.1.0
+servers:
+  - url: http://localhost:8082
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+  /.well-known/info:
+    get:
+      summary: Service metadata
+      responses:
+        '200':
+          description: Metadata document
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Metrics payload
+  /api/v1/start:
+    post:
+      summary: Materialise quiz execution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_id:
+                  type: string
+              required:
+                - session_id
+      responses:
+        '200':
+          description: Execution started
+  /api/v1/{execution}/stream:
+    get:
+      summary: Subscribe to execution stream (SSE)
+      parameters:
+        - name: execution
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Stream established
+          content:
+            text/event-stream:
+              schema:
+                type: string
+  /api/v1/{execution}/answer:
+    post:
+      summary: Submit answer
+      parameters:
+        - name: execution
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: string
+                option:
+                  type: string
+              required:
+                - item_id
+                - option
+      responses:
+        '200':
+          description: Answer recorded
+  /api/v1/{execution}/feedback/dislike:
+    post:
+      summary: Record user dislike feedback
+      parameters:
+        - name: execution
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item_id:
+                  type: string
+                reason:
+                  type: string
+              required:
+                - item_id
+                - reason
+      responses:
+        '202':
+          description: Feedback accepted
+  /api/v1/{execution}/item/{item_id}/regenerate:
+    post:
+      summary: Request regeneration of an MCQ item
+      parameters:
+        - name: execution
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: item_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                context_snapshot:
+                  type: object
+      responses:
+        '202':
+          description: Regeneration requested

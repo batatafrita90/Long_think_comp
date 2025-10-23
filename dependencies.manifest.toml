@@ -1,0 +1,157 @@
+# Dependency manifest generated 2025-10-23
+# Use per-service sections to install pinned, non-conflicting packages.
+
+[python.shared]
+packages = [
+  "pydantic==2.8.2",
+  "pydantic-settings==2.3.4",
+  "structlog==24.2.0",
+  "orjson==3.10.3",
+  "python-dotenv==1.0.1",
+  "tenacity==8.3.0"
+]
+
+[python.api-gateway]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "httpx==0.27.2",
+  "nats-py==2.4.0",
+  "supabase==2.4.0",
+  "python-multipart==0.0.9",
+  "sse-starlette==1.8.2"
+]
+
+[python.user-engine]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "supabase==2.4.0",
+  "passlib[bcrypt]==1.7.4",
+  "pyjwt[crypto]==2.9.0",
+  "sqlalchemy==2.0.35",
+  "alembic==1.13.2",
+  "asyncpg==0.29.0"
+]
+
+[python.parsed-pdf]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "nats-py==2.4.0",
+  "paddleocr==2.7.3",
+  "paddlepaddle-gpu==2.6.2",
+  "opencv-python-headless==4.10.0.84",
+  "pdfminer.six==20231228",
+  "unstructured==0.14.9",
+  "numpy==1.26.4",
+  "pillow==10.4.0"
+]
+
+[python.embedder]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "nats-py==2.4.0",
+  "langchain==0.2.7",
+  "langchain-community==0.2.7",
+  "langchain-text-splitters==0.2.2",
+  "sentence-transformers==2.7.0",
+  "numpy==1.26.4",
+  "scikit-learn==1.5.2"
+]
+
+[python.indexer]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "nats-py==2.4.0",
+  "qdrant-client==1.9.0"
+]
+
+[python.workflow-agentes]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "nats-py==2.4.0",
+  "langchain==0.2.7",
+  "langchain-community==0.2.7",
+  "langchain-openai==0.1.13",
+  "langgraph==0.1.8",
+  "langfuse==2.4.1",
+  "qdrant-client==1.9.0",
+  "psycopg[binary]==3.2.1",
+  "sqlalchemy==2.0.35",
+  "opentelemetry-api==1.25.0",
+  "opentelemetry-sdk==1.25.0"
+]
+
+[python.reviewer-proxy]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "langchain==0.2.7",
+  "langchain-openai==0.1.13",
+  "httpx==0.27.2",
+  "typer==0.12.5",
+  "redis==5.0.7"
+]
+
+[python.quiz-session-service]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "nats-py==2.4.0",
+  "httpx==0.27.2",
+  "redis==5.0.7",
+  "sse-starlette==1.8.2"
+]
+
+[python.metrics-engine]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "nats-py==2.4.0",
+  "pandas==2.2.3",
+  "sqlalchemy==2.0.35"
+]
+
+[python.janitor]
+packages = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.1",
+  "qdrant-client==1.9.0",
+  "schedule==1.2.2"
+]
+
+[python.tooling]
+packages = [
+  "typer==0.12.5",
+  "rich==13.9.1",
+  "nats-py==2.4.0",
+  "qdrant-client==1.9.0",
+  "jsonschema==4.23.0"
+]
+
+[node.frontend]
+packages = [
+  "next@14.2.5",
+  "react@18.3.1",
+  "react-dom@18.3.1",
+  "@supabase/supabase-js@2.42.6",
+  "@tanstack/react-query@5.56.0",
+  "swr@2.3.2",
+  "zustand@4.5.3",
+  "@vercel/analytics@1.2.2",
+  "axios@1.7.7"
+]
+
+[node.frontend.devDependencies]
+packages = [
+  "typescript@5.6.2",
+  "eslint@9.11.1",
+  "eslint-config-next@14.2.5",
+  "tailwindcss@3.4.10",
+  "postcss@8.4.40",
+  "autoprefixer@10.4.20"
+]

@@ -1,0 +1,49 @@
+openapi: 3.0.3
+info:
+  title: Reviewer Proxy
+  version: 0.1.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+  /.well-known/info:
+    get:
+      summary: Service metadata
+      responses:
+        '200':
+          description: Metadata document
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Metrics payload
+  /api/v1/generate-mcq:
+    post:
+      summary: Request MCQ generation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Generated MCQs
+  /api/v1/review:
+    post:
+      summary: Submit MCQ for review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Review outcome

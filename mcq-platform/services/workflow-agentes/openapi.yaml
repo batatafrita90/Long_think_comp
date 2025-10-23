@@ -1,0 +1,54 @@
+openapi: 3.0.3
+info:
+  title: Workflow Agentes
+  version: 0.1.0
+servers:
+  - url: http://localhost:8081
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+  /.well-known/info:
+    get:
+      summary: Service metadata
+      responses:
+        '200':
+          description: Metadata document
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Metrics payload
+  /internal/v1/run:
+    post:
+      summary: Trigger workflow manually
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                session_id:
+                  type: string
+              required:
+                - session_id
+      responses:
+        '202':
+          description: Workflow accepted
+  /internal/v1/status/{run_id}:
+    get:
+      summary: Retrieve workflow status
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Status payload

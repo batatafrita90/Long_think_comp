@@ -1,0 +1,98 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    image: mcq-platform/api-gateway:latest
+    env_file:
+      - ../services/api-gateway/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - workflow-agentes
+      - quiz-session-service
+    networks:
+      - edge
+      - internal
+
+  user-engine:
+    image: mcq-platform/user-engine:latest
+    env_file:
+      - ../services/user-engine/.env
+    networks:
+      - internal
+
+  parsed-pdf:
+    image: mcq-platform/parsed-pdf:latest
+    env_file:
+      - ../services/parsed-pdf/.env
+    networks:
+      - internal
+
+  embedder:
+    image: mcq-platform/embedder:latest
+    env_file:
+      - ../services/embedder/.env
+    networks:
+      - internal
+
+  indexer:
+    image: mcq-platform/indexer:latest
+    env_file:
+      - ../services/indexer/.env
+    networks:
+      - internal
+
+  reviewer-proxy:
+    image: mcq-platform/reviewer-proxy:latest
+    env_file:
+      - ../services/reviewer-proxy/.env
+    networks:
+      - internal
+
+  workflow-agentes:
+    image: mcq-platform/workflow-agentes:latest
+    env_file:
+      - ../services/workflow-agentes/.env
+    depends_on:
+      - reviewer-proxy
+    networks:
+      - internal
+
+  quiz-session-service:
+    image: mcq-platform/quiz-session-service:latest
+    env_file:
+      - ../services/quiz-session-service/.env
+    networks:
+      - internal
+      - edge
+
+  metrics-engine:
+    image: mcq-platform/metrics-engine:latest
+    env_file:
+      - ../services/metrics-engine/.env
+    networks:
+      - internal
+
+  janitor:
+    image: mcq-platform/janitor:latest
+    env_file:
+      - ../services/janitor/.env
+    deploy:
+      replicas: 1
+    networks:
+      - internal
+
+  frontend-web-app:
+    image: mcq-platform/frontend-web-app:latest
+    env_file:
+      - ../frontend/web-app/.env.local
+    ports:
+      - "3000:3000"
+    networks:
+      - edge
+
+networks:
+  internal:
+    driver: bridge
+  edge:
+    driver: bridge

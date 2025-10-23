@@ -1,0 +1,230 @@
+version: '3.9'
+
+x-app-service: &app-service
+  restart: unless-stopped
+  networks:
+    - internal
+  depends_on:
+    - nats
+    - qdrant
+
+services:
+  nats:
+    image: nats:2.10-alpine
+    command: ["-js"]
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats_data:/data
+    healthcheck:
+      test: ["CMD", "nats", "--server", "localhost:4222", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: langfuse
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  langfuse:
+    image: ghcr.io/langfuse/langfuse:latest
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://langfuse:langfuse@postgres:5432/langfuse
+      NEXTAUTH_SECRET: supersecret
+      NEXTAUTH_URL: http://localhost:3000
+      ENCRYPTION_KEY: changemechangemechangemechangeme
+    ports:
+      - "3000:3000"
+    networks:
+      - internal
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - internal
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - internal
+
+  vllm:
+    image: vllm/vllm-openai:latest
+    environment:
+      VLLM_MODEL_NAME: PaddleOCR-VL-0.9B
+    ports:
+      - "8800:8000"
+    networks:
+      - internal
+
+  api-gateway:
+    <<: *app-service
+    build:
+      context: ../services/api-gateway
+    env_file:
+      - ../services/api-gateway/.env
+    ports:
+      - "8000:8000"
+    networks:
+      - internal
+      - edge
+
+  user-engine:
+    <<: *app-service
+    build:
+      context: ../services/user-engine
+    env_file:
+      - ../services/user-engine/.env
+
+  parsed-pdf:
+    <<: *app-service
+    build:
+      context: ../services/parsed-pdf
+    env_file:
+      - ../services/parsed-pdf/.env
+
+  embedder:
+    <<: *app-service
+    build:
+      context: ../services/embedder
+    env_file:
+      - ../services/embedder/.env
+
+  indexer:
+    <<: *app-service
+    build:
+      context: ../services/indexer
+    env_file:
+      - ../services/indexer/.env
+    depends_on:
+      - qdrant
+
+  workflow-agentes:
+    <<: *app-service
+    build:
+      context: ../services/workflow-agentes
+    env_file:
+      - ../services/workflow-agentes/.env
+    depends_on:
+      - reviewer-proxy
+      - postgres
+
+  reviewer-proxy:
+    <<: *app-service
+    build:
+      context: ../services/reviewer-proxy
+    env_file:
+      - ../services/reviewer-proxy/.env
+    networks:
+      - internal
+
+  quiz-session-service:
+    <<: *app-service
+    build:
+      context: ../services/quiz-session-service
+    env_file:
+      - ../services/quiz-session-service/.env
+    depends_on:
+      - workflow-agentes
+    networks:
+      - internal
+      - edge
+
+  metrics-engine:
+    <<: *app-service
+    build:
+      context: ../services/metrics-engine
+    env_file:
+      - ../services/metrics-engine/.env
+
+  janitor:
+    <<: *app-service
+    build:
+      context: ../services/janitor
+    env_file:
+      - ../services/janitor/.env
+    deploy:
+      replicas: 1
+
+  frontend-web-app:
+    build:
+      context: ../frontend/web-app
+    command: ["pnpm", "dev"]
+    working_dir: /app
+    volumes:
+      - ../frontend/web-app:/app
+    ports:
+      - "3002:3000"
+    env_file:
+      - ../frontend/web-app/.env.local
+    networks:
+      - edge
+
+  nats-provisioner:
+    build:
+      context: ../tooling/nats-provisioner
+    env_file:
+      - ../services/api-gateway/.env
+    depends_on:
+      - nats
+    networks:
+      - internal
+
+  qdrant-seeder:
+    build:
+      context: ../tooling/qdrant-seeder
+    env_file:
+      - ../services/workflow-agentes/.env
+    depends_on:
+      - qdrant
+    networks:
+      - internal
+
+  schema-registry:
+    build:
+      context: ../tooling/schema-registry
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
+  edge:
+    driver: bridge
+
+volumes:
+  nats_data:
+  qdrant_data:
+  postgres_data:
+  prometheus_data:
+  grafana_data:
