@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.3
 info:
   title: API Gateway
   version: 0.1.0
@@ -9,19 +9,19 @@ paths:
     get:
       summary: Health check
       responses:
-        '200':
+        "200":
           description: Service is healthy
   /.well-known/info:
     get:
       summary: Service metadata
       responses:
-        '200':
+        "200":
           description: Metadata document
   /metrics:
     get:
       summary: Prometheus metrics
       responses:
-        '200':
+        "200":
           description: Metrics payload
   /api/v1/upload:
     post:
@@ -37,7 +37,7 @@ paths:
                   type: string
                   format: binary
       responses:
-        '202':
+        "202":
           description: Upload accepted and ingestion started
   /api/v1/sessions/start:
     post:
@@ -54,7 +54,7 @@ paths:
               required:
                 - session_id
       responses:
-        '200':
+        "200":
           description: Session started
   /api/v1/sessions/{execution}/answer:
     post:
@@ -80,7 +80,7 @@ paths:
                 - item_id
                 - option
       responses:
-        '200':
+        "200":
           description: Answer processed
   /api/v1/sessions/{execution}/results:
     get:
@@ -92,5 +92,5 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Session results

@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "mcq-tooling"
+version = "0.1.0"
+description = "Dependencies for the tooling component of the MCQ platform."
+authors = ["MCQ Platform <dev@mcq-platform.local>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+"pydantic" = "2.8.2"
+"pydantic-settings" = "2.3.4"
+"structlog" = "24.2.0"
+"orjson" = "3.10.3"
+"python-dotenv" = "1.0.1"
+"tenacity" = "8.3.0"
+"typer" = "0.12.5"
+"rich" = "13.9.1"
+"nats-py" = "2.4.0"
+"qdrant-client" = "1.9.0"
+"jsonschema" = "4.23.0"
+
+[build-system]
+requires = ["poetry-core>=1.7.0"]
+build-backend = "poetry.core.masonry.api"
