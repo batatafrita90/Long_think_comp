@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.3
 info:
   title: Workflow Agentes
   version: 0.1.0
@@ -9,19 +9,19 @@ paths:
     get:
       summary: Health check
       responses:
-        '200':
+        "200":
           description: Service is healthy
   /.well-known/info:
     get:
       summary: Service metadata
       responses:
-        '200':
+        "200":
           description: Metadata document
   /metrics:
     get:
       summary: Prometheus metrics
       responses:
-        '200':
+        "200":
           description: Metrics payload
   /internal/v1/run:
     post:
@@ -38,7 +38,7 @@ paths:
               required:
                 - session_id
       responses:
-        '202':
+        "202":
           description: Workflow accepted
   /internal/v1/status/{run_id}:
     get:
@@ -50,5 +50,5 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Status payload

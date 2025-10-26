@@ -1,0 +1,15 @@
+{
+  "yaml.schemas": {
+    "file:///c%3A/Users/jonat/.cursor/extensions/continue.continue-1.2.7-win32-x64/config-yaml-schema.json": [
+      ".continue/**/*.yaml"
+    ],
+    "https://spec.openapis.org/oas/3.1/schema/2022-10-07": "file:///c%3A/Users/jonat/AppData/CLONE_REP/Long_think_comp/mcq-platform/services/user-engine/openapi.yaml"
+  },
+  "explorer.excludeGitIgnore": true,
+  "python.analysis.typeEvaluation.disableBytesTypePromotions": false,
+  "typescript.tsserver.web.projectWideIntellisense.suppressSemanticErrors": true,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "cSpell.fixSpellingWithRenameProvider": false,
+  "cSpell.ignoreRandomStrings": false,
+  "cSpell.unknownWords": "report-common-typos"
+}

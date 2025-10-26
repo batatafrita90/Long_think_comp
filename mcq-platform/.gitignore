@@ -7,6 +7,8 @@ node_modules/
 .next/
 
 # Env files
+.venv/
+*/.venv/
 *.env
 .env
 .env.local
