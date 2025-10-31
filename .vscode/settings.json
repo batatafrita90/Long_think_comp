@@ -11,5 +11,7 @@
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
   "cSpell.fixSpellingWithRenameProvider": false,
   "cSpell.ignoreRandomStrings": false,
-  "cSpell.unknownWords": "report-common-typos"
+  "cSpell.unknownWords": "report-common-typos",
+  "python.languageServer": "None",
+  "extensions.webWorker": true
 }

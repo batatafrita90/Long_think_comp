@@ -2,9 +2,19 @@
 
 Microservices-based platform for MCQ generation and delivery. Each service ships with its own `.env`, `Dockerfile`, `openapi.yaml` (when applicable), and entry point under `src/app`.
 
+- A APLICAÇÃO É UM WORKFLOW DE AGENTES DE IA QUE CRIA QUESTÇOES DE MULTIPLA ESCOLHA A PARTIR DE ARQUIVOS, NÃO É FEITO PARA PROFESSORES SOMENTE, É FEITO PARA ACADEMICOS DE MEDICINA, PESSIAS QUE ESTÃO PREPARANDO PARA A RESIDENCIA MEDICA. 
+
+A IDEIA: É CRIAR UM BANCO DE QUESTÕES DE MULTIPLA ESCOLHA A PARTIR DE RESUMO, ANOTAÇÕES QUE O USUÁRIO DISPONIBILIZA; 
+
+#O PONTO DIFERENCIAL É USAR A TAXONOMIA DE BLOOM PARA CRIAR AS QUESTÕES DE MULTIPLA ESCOLHA.
+OS AGENTES SÃO PREPARADOS PARA CRIAR QUESTÕES ASSIM.  
+OS MODELOS USAM METODOLOGIA E TECNICA BASEADO NA CRIAÇÃO DE CONTEXTO E DISTRATORES. ELES USAM,M ISSO PARA CRIAR CADA QUESTÃO. 
+TAMPAMOS UMA LACUNA GIGANTESCA: ESTUDAR E LEMRBAR DO QUE FEZ. 
+# A APLICAÇÃO É NACIONAL - PT-BR
+
 ## Overview
 - `api-gateway`: HTTP edge for uploads and session proxying.
-- `workflow-agentes`: orchestrates LangGraph, emits progress and quiz packages.
+- `workflow-agentes`: orchestrates La ngGraph, emits progress and quiz packages.
 - `quiz-session-service`: materialises executions, exposes HTTP + SSE/WebSocket.
 - `user-engine`: authentication, profiles, historical aggregates.
 - `parsed-pdf`, `embedder`, `indexer`: ingestion pipeline targeting Qdrant.

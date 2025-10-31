@@ -1,0 +1,4 @@
+reports/*.html
+reports/*.ndjson
+node_modules
+.pnpm-store
